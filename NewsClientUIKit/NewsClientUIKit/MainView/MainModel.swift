@@ -1,8 +1,9 @@
+
 //
-//  Model.swift
+//  Untitled.swift
 //  NewsClientUIKit
 //
-//  Created by Ruslan Liulka on 06.03.2025.
+//  Created by Ruslan Liulka on 07.03.2025.
 //
 
 import Foundation
@@ -14,8 +15,8 @@ struct NewsRequest: Codable {
     
     
     struct Articles: Codable {
-        var souce: Source
-        var author: String
+        var source: Source
+        var author: String?
         var title: String
         var description: String
         var url: String
@@ -28,7 +29,7 @@ struct NewsRequest: Codable {
     }
     
     struct Source: Codable {
-        var id: String
+        var id: String?
         var name: String
     }
 }

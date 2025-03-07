@@ -20,7 +20,7 @@ struct ApiLink {
     private let mainLink = "https://newsapi.org/v2/top-headlines?"
     private let apiKey = "37beefb7966b4f568c9f18718ca7b11d"
     
-    func builtUrl(category: Category) -> URL? {
+    func buildUrl(category: Category) -> URL? {
         var components = URLComponents(string: mainLink)
         var queryItems = [URLQueryItem]()
         
