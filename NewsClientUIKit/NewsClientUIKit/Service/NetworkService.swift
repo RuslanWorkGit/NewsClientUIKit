@@ -7,6 +7,7 @@
 
 import Foundation
 
+
 class NetworkService {
     
     func fetch<T: Decodable>(with url: URL, completion: @escaping (Result<T, Error>) -> Void) {
