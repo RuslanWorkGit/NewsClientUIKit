@@ -15,6 +15,7 @@ class TabBarController: UITabBarController {
     }
     
     private func setupBar() {
+        
         let mainVC = UINavigationController(rootViewController: MainView())
         let searchVC = UINavigationController(rootViewController: SearchView())
         let settingVC = UINavigationController(rootViewController: SettingView())

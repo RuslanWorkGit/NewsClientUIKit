@@ -29,8 +29,11 @@ class NewsCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func set(news: NewsRequest) {
-        newsTitleLabel.text = news.articles[0].title
+    func set(news: Articles) {
+        
+        newsTitleLabel.text = news.title
+        
+        
     }
     
     func configureImageView() {

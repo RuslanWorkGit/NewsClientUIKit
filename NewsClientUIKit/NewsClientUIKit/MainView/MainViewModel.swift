@@ -12,13 +12,19 @@ class MainViewModel {
     private let networkService: NetworkServiceProtocol
     private let apiLink = ApiLink()
     
-    var articles: NewsRequest?
+    var newsRequest: NewsRequest?{
+        didSet {
+            updateNews!(newsRequest!)
+        }
+    }
+
+    var updateNews: ((NewsRequest) -> Void)?
     
     init(networkService: NetworkServiceProtocol = NetworkService()) {
         self.networkService = networkService
     }
     
-    func fethcData(completion: @escaping (NewsRequest) -> Void) {
+    func fethcData(/*completion: @escaping (NewsRequest) -> Void*/) {
         
         guard let url = apiLink.buildUrl(category: .general) else {
             print("wrong link")
@@ -28,8 +34,7 @@ class MainViewModel {
         networkService.fetch(with: url) { (result: Result<NewsRequest, Error>) in
             switch result {
             case .success(let newRequest):
-                self.articles = newRequest
-                completion(newRequest)
+                self.newsRequest = newRequest
             case .failure(let error):
                 print("Error: \(error)")
             }
