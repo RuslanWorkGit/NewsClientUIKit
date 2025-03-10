@@ -8,6 +8,7 @@
 import UIKit
 import SnapKit
 
+
 class MainView: UIViewController {
     
     let tableView = UITableView()
@@ -86,7 +87,9 @@ extension MainView: UITableViewDelegate {
         
         guard let mainRequest = request else { return }
         
-        print("select row from \( mainRequest.articles[indexPath.row].author ?? "no author")")
+        let detailVC = DetailsNewsView()
+        detailVC.articles = mainRequest.articles[indexPath.row]
+        navigationController?.pushViewController(detailVC, animated: false)
     }
 }
 
