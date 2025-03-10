@@ -16,15 +16,31 @@ enum Category: String {
     case technology
 }
 
+enum EndPoints: String {
+    case everything = "/v2/everything?"
+    case topHeadLines = "/v2/top-headlines?"
+}
+
 struct ApiLink {
-    private let mainLink = "https://newsapi.org/v2/top-headlines?"
+    private let mainLink = "https://newsapi.org"
     private let apiKey = "37beefb7966b4f568c9f18718ca7b11d"
     
-    func buildUrl(category: Category) -> URL? {
-        var components = URLComponents(string: mainLink)
+    func buildUrl(endpoints: EndPoints, category: Category? = nil, search: String = "") -> URL? {
+        
+        let fullLink = mainLink + endpoints.rawValue
+        var components = URLComponents(string: fullLink)
         var queryItems = [URLQueryItem]()
         
-        queryItems.append(URLQueryItem(name: "category", value: category.rawValue))
+        
+        if !search.isEmpty {
+            queryItems.append(URLQueryItem(name: "q", value: search))
+        }
+        
+        
+        if let addCategory = category?.rawValue {
+            queryItems.append(URLQueryItem(name: "category", value: addCategory))
+        }
+        
         queryItems.append(URLQueryItem(name: "apiKey", value: apiKey))
         
         components?.queryItems = queryItems

@@ -26,7 +26,7 @@ class MainViewModel {
     
     func fethcData(/*completion: @escaping (NewsRequest) -> Void*/) {
         
-        guard let url = apiLink.buildUrl(category: .general) else {
+        guard let url = apiLink.buildUrl(endpoints: .topHeadLines ,category: .general) else {
             print("wrong link")
             return
         }
