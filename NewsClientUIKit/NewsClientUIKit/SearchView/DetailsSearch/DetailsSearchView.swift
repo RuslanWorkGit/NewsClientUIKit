@@ -43,11 +43,17 @@ class DetailsSearchView: UIViewController {
 
 //MARK: - UITableViewDelegate
 extension DetailsSearchView: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        100
+    }
+    
     
 }
 
 //MARK: - UITableViewDataSource
 extension DetailsSearchView: UITableViewDataSource {
+    
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         print(request?.totalResults)
         return request?.totalResults ?? 0
@@ -63,6 +69,15 @@ extension DetailsSearchView: UITableViewDataSource {
        
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        guard let mainRequest = request else { return }
+        
+        let detailsVC = DetailsNewsView()
+        detailsVC.articles = mainRequest.articles[indexPath.row]
+        navigationController?.pushViewController(detailsVC, animated: true)
     }
     
     

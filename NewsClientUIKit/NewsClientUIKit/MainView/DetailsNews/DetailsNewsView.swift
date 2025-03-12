@@ -5,9 +5,9 @@
 //  Created by Ruslan Liulka on 09.03.2025.
 //
 
-import Foundation
 import SnapKit
 import UIKit
+import SDWebImage
 
 class DetailsNewsView: UIViewController {
     let image = UIImageView()
@@ -39,15 +39,14 @@ class DetailsNewsView: UIViewController {
         titleLabel.font = .systemFont(ofSize: 20, weight: .bold)
         descriptionLabel.numberOfLines = 0
         content.numberOfLines = 0
-        
-        image.image = UIImage(systemName: "figure.walk.treadmill")
+
 
         
         image.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).offset(8)
-            make.trailing.equalToSuperview().offset(-8)
-            make.leading.equalToSuperview().offset(8)
-            make.height.equalTo(150)
+            make.trailing.equalToSuperview()
+            make.leading.equalToSuperview()
+            make.height.equalTo(250)
         }
         
         sourceNameLabel.snp.makeConstraints { make in
@@ -87,10 +86,11 @@ class DetailsNewsView: UIViewController {
         guard let news = articles else { return }
         
         sourceNameLabel.text = news.source.name
-        authorLabel.text = news.author
+        authorLabel.text = "Author: \(news.author ?? "")"
         titleLabel.text = news.title
         descriptionLabel.text = news.description
         content.text = news.content
+        image.sd_setImage(with: URL(string: news.urlToImage ?? ""), placeholderImage: UIImage(named: "basicNews.jpg"))
     }
     
     

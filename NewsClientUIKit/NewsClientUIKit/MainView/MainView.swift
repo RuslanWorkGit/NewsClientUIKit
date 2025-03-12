@@ -47,6 +47,8 @@ class MainView: UIViewController {
         //register cell
         tableView.register(NewsCell.self, forCellReuseIdentifier: "NewsCell")
         
+        tableView.separatorStyle = .none
+        
         tableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
             

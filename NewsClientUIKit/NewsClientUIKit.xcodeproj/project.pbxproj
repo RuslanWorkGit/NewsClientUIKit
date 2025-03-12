@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		9B48ACCC2D7B07630069E957 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 9B48ACCB2D7B07630069E957 /* SnapKit */; };
+		9B83C2722D8076F300A44A4E /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 9B83C2712D8076F300A44A4E /* SDWebImage */; };
+		9B83C2742D8076F300A44A4E /* SDWebImageMapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 9B83C2732D8076F300A44A4E /* SDWebImageMapKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +42,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9B83C2722D8076F300A44A4E /* SDWebImage in Frameworks */,
+				9B83C2742D8076F300A44A4E /* SDWebImageMapKit in Frameworks */,
 				9B48ACCC2D7B07630069E957 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -84,6 +88,8 @@
 			name = NewsClientUIKit;
 			packageProductDependencies = (
 				9B48ACCB2D7B07630069E957 /* SnapKit */,
+				9B83C2712D8076F300A44A4E /* SDWebImage */,
+				9B83C2732D8076F300A44A4E /* SDWebImageMapKit */,
 			);
 			productName = NewsClientUIKit;
 			productReference = 9B42CA712D79B4C900027EB9 /* NewsClientUIKit.app */;
@@ -115,6 +121,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				9B740D9F2D7B06B600B985ED /* XCRemoteSwiftPackageReference "SnapKit" */,
+				9B86FACD2D80769B00EA9884 /* XCRemoteSwiftPackageReference "SDWebImage" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 9B42CA722D79B4C900027EB9 /* Products */;
@@ -354,6 +361,14 @@
 				minimumVersion = 5.7.1;
 			};
 		};
+		9B86FACD2D80769B00EA9884 /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImage.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.21.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -361,6 +376,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 9B740D9F2D7B06B600B985ED /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
+		};
+		9B83C2712D8076F300A44A4E /* SDWebImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9B86FACD2D80769B00EA9884 /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			productName = SDWebImage;
+		};
+		9B83C2732D8076F300A44A4E /* SDWebImageMapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9B86FACD2D80769B00EA9884 /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			productName = SDWebImageMapKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

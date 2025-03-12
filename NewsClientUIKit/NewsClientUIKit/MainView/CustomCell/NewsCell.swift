@@ -7,8 +7,20 @@
 
 import UIKit
 import SnapKit
+import SDWebImage
+
 
 class NewsCell: UITableViewCell {
+    
+    private let containerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        view.layer.cornerRadius = 10
+        view.layer.borderWidth = 1
+        view.layer.borderColor = UIColor.systemGray.cgColor
+        view.clipsToBounds = true
+        return view
+    }()
     
     var newsImageView = UIImageView()
     var newsTitleLabel = UILabel()
@@ -16,11 +28,16 @@ class NewsCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        addSubview(newsImageView)
-        addSubview(newsTitleLabel)
+        contentView.addSubview(containerView)
+        containerView.addSubview(newsImageView)
+        containerView.addSubview(newsTitleLabel)
+//        addSubview(newsImageView)
+//        addSubview(newsTitleLabel)
         
+        setupUI()
         configureImageView()
         configureTitleLabel()
+        setContainerConstraint()
         setImageConstraint()
         setTitleConstraint()
     }
@@ -29,8 +46,12 @@ class NewsCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func setupUI() {
+        backgroundColor = .clear
+    }
+    
     func set(news: Articles) {
-        
+        newsImageView.sd_setImage(with: URL(string: news.urlToImage ?? ""), placeholderImage: UIImage(named: "basicNews.jpg"))
         newsTitleLabel.text = news.title
         
         
@@ -39,12 +60,22 @@ class NewsCell: UITableViewCell {
     func configureImageView() {
         newsImageView.layer.cornerRadius = 10
         newsImageView.clipsToBounds = true
+        newsImageView.contentMode = .scaleAspectFill
         
     }
     
     func configureTitleLabel() {
         newsTitleLabel.numberOfLines = 0
         newsTitleLabel.adjustsFontSizeToFitWidth = true
+    }
+    
+    private func setContainerConstraint() {
+        containerView.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(4)
+            make.bottom.equalToSuperview().offset(-4)
+            make.leading.equalToSuperview().offset(8)
+            make.trailing.equalToSuperview().offset(-8)
+        }
     }
     
     func setImageConstraint() {
