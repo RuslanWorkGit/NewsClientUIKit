@@ -18,12 +18,17 @@ class DetailsNewsView: UIViewController {
     let publishedAtLabel = UILabel()
     let content = UILabel()
     
+    let coreDataService = CoreDataService.shared
     var articles: Articles?
+    private let viewModel = DetailsNewsViewModel()
+    private var isSaved = false
+    private var saveButton: UIBarButtonItem?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         updateUI()
+        configureNavBar()
     }
     
     func setupUI() {
@@ -93,6 +98,28 @@ class DetailsNewsView: UIViewController {
         image.sd_setImage(with: URL(string: news.urlToImage ?? ""), placeholderImage: UIImage(named: "basicNews.jpg"))
     }
     
+    func configureNavBar() {
+        saveButton = UIBarButtonItem(image: UIImage(systemName: "star"), style: .plain, target: self, action: #selector(saveNews))
+        
+        navigationItem.rightBarButtonItem = saveButton
+    }
+    
+    @objc func saveNews() {
+        
+        guard let news = articles else { return }
+        
+        isSaved.toggle()
+        
+        let newImage = isSaved ? UIImage(systemName: "star.fill") : UIImage(systemName: "star")
+        saveButton?.image = newImage
+        print(isSaved ? "News saved" : "News doest saved")
+        
+        if isSaved {
+            viewModel.saveNews(with: news)
+        } else {
+            viewModel.deleteNews(with: news.title)
+        }
+    }
     
 }
 

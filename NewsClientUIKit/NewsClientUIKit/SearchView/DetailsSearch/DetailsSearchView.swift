@@ -39,6 +39,7 @@ class DetailsSearchView: UIViewController {
         
     }
     
+    
 }
 
 //MARK: - UITableViewDelegate
