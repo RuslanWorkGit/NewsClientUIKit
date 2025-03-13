@@ -11,6 +11,8 @@ import SnapKit
 class SettingView: UIViewController {
     
     let showSavedButton = UIButton()
+    private var savedNews: [SavedNews] = []
+    private let viewModel = SettingViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,7 +47,10 @@ class SettingView: UIViewController {
     }
     
     @objc func showSavedNews() {
-        print("Show saved news")
+        
+        let showListSavedNews = ShowSavedNewsView()
+        showListSavedNews.savedNews = viewModel.funcLoadData()
+        navigationController?.pushViewController(showListSavedNews, animated: true)
     }
     
     
