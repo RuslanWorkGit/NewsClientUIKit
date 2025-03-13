@@ -24,9 +24,9 @@ class MainViewModel {
         self.networkService = networkService
     }
     
-    func fethcData(/*completion: @escaping (NewsRequest) -> Void*/) {
+    func fethcData(category: Category) {
         
-        guard let url = apiLink.buildUrl(endpoints: .topHeadLines ,category: .general) else {
+        guard let url = apiLink.buildUrl(endpoints: .topHeadLines ,category: category) else {
             print("wrong link")
             return
         }

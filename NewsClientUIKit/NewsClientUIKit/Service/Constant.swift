@@ -6,7 +6,7 @@
 //
 import Foundation
 
-enum Category: String {
+enum Category: String, CaseIterable {
     case business
     case general
     case entertainment
