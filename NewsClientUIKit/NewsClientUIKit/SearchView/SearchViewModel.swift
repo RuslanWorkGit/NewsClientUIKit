@@ -24,7 +24,7 @@ class SearchViewModel {
         self.networkService = networkService
     }
     
-    func fetchSearchData(with searchInfo: String, completion: @escaping ((SearchRequest) -> Void)) {
+    func fetchSearchData(with searchInfo: String, sortByPopularity: Bool , completion: @escaping ((SearchRequest) -> Void)) {
         guard let url = apiLink.buildUrl(endpoints: .everything, search: searchInfo) else {
             print("Wrong Link")
             return

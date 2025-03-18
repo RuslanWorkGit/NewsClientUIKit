@@ -12,6 +12,8 @@ class SearchView: UIViewController {
     
     let searchTextField = UITextField()
     let searchButton = UIButton()
+    let switchPopularity = UISwitch()
+    
     
     var request: SearchRequest?
     let viewModel = SearchViewModel()
@@ -28,6 +30,7 @@ class SearchView: UIViewController {
         
         view.addSubview(searchTextField)
         view.addSubview(searchButton)
+        view.addSubview(switchPopularity)
         
         searchTextField.placeholder = "Search"
         searchTextField.borderStyle = .roundedRect
@@ -52,6 +55,11 @@ class SearchView: UIViewController {
             make.width.equalTo(100)
             make.height.equalTo(50)
         }
+        
+        switchPopularity.snp.makeConstraints { make in
+            make.top.equalTo(searchButton.snp.bottom).offset(24)
+            make.leading.trailing.equalToSuperview().inset(24)
+        }
     }
     
     func setupBinding() {
@@ -74,7 +82,10 @@ class SearchView: UIViewController {
             return
         }
         
-        viewModel.fetchSearchData(with: search) { [weak self] request in
+        if switchPopularity.isOn {
+            
+        }
+        viewModel.fetchSearchData(with: search, sortByPopularity: true) { [weak self] request in
             guard let self = self else { return }
             
             DispatchQueue.main.async {

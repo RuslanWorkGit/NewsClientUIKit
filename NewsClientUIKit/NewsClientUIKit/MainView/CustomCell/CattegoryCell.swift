@@ -18,6 +18,8 @@ class CategoryCell: UICollectionViewCell {
         return label
     }()
     
+    var didTapHandler: (() -> Void)?
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -31,6 +33,9 @@ class CategoryCell: UICollectionViewCell {
     private func setupUI() {
         contentView.addSubview(categoryLabel)
         categoryLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(didtapped))
+        contentView.addGestureRecognizer(tapRecognizer)
         
         categoryLabel.snp.makeConstraints { make in
             make.centerX.equalTo(contentView.snp.centerX)
@@ -47,5 +52,9 @@ class CategoryCell: UICollectionViewCell {
         categoryLabel.text = category
         contentView.backgroundColor = isSelected ? .blue : .white
         categoryLabel.textColor = isSelected ? .white : .black
+    }
+    
+    @objc private func didtapped() {
+        didTapHandler?()
     }
 }

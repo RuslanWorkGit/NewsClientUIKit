@@ -20,6 +20,7 @@ class DetailsNewsView: UIViewController {
     
     let coreDataService = CoreDataService.shared
     var articles: Articles?
+    var savedArticles: SavedArticles?
     private let viewModel = DetailsNewsViewModel()
     private var isSaved = false
     private var saveButton: UIBarButtonItem?
@@ -86,16 +87,34 @@ class DetailsNewsView: UIViewController {
         
     }
     
+//    func updateUI() {
+//        
+//        guard let news = articles else { return }
+//        
+//        sourceNameLabel.text = news.source.name
+//        authorLabel.text = "Author: \(news.author ?? "")"
+//        titleLabel.text = news.title
+//        descriptionLabel.text = news.description
+//        content.text = news.content
+//        image.sd_setImage(with: URL(string: news.urlToImage ?? ""), placeholderImage: UIImage(named: "basicNews.jpg"))
+//    }
+    
     func updateUI() {
         
-        guard let news = articles else { return }
+        guard let news = savedArticles else { return }
         
         sourceNameLabel.text = news.source.name
-        authorLabel.text = "Author: \(news.author ?? "")"
+        authorLabel.text = "Author: \(news.author)"
         titleLabel.text = news.title
         descriptionLabel.text = news.description
         content.text = news.content
-        image.sd_setImage(with: URL(string: news.urlToImage ?? ""), placeholderImage: UIImage(named: "basicNews.jpg"))
+        
+        if let imageData = news.urlToImage {
+            image.image = UIImage(data: imageData)
+        } else {
+            image.image = UIImage(named: "basicNews.jpg")
+        }
+        
     }
     
     func configureNavBar() {
@@ -106,7 +125,7 @@ class DetailsNewsView: UIViewController {
     
     @objc func saveNews() {
         
-        guard let news = articles else { return }
+        guard let news = savedArticles else { return }
         
         isSaved.toggle()
         

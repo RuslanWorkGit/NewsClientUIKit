@@ -12,6 +12,9 @@ class ShowSavedNewsView: UIViewController {
     let tableView = UITableView()
     var savedNews: [SavedNews] = []
     
+    private var isDeleted = false
+    private var deleteAllButton: UIBarButtonItem?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -30,6 +33,30 @@ class ShowSavedNewsView: UIViewController {
             make.edges.equalToSuperview()
         }
     }
+    
+//    func configureNavBar() {
+//        deleteAllButton = UIBarButtonItem(image: UIImage(systemName: "star"), style: .plain, target: self, action: #selector(saveNews))
+//        
+//        navigationItem.rightBarButtonItem = deleteAllButton
+//    }
+//    
+//    @objc func saveNews() {
+//        
+//        guard let news = savedNews
+//        else { return }
+//        
+//        isSaved.toggle()
+//        
+//        let newImage = isSaved ? UIImage(systemName: "star.fill") : UIImage(systemName: "star")
+//        saveButton?.image = newImage
+//        print(isSaved ? "News saved" : "News doest saved")
+//        
+//        if isSaved {
+//            //viewModel.saveNews(with: news)
+//        } else {
+//            viewModel.deleteNews(with: news.title)
+//        }
+//    }
 }
 
 //MARK: - UITableViewDelegate

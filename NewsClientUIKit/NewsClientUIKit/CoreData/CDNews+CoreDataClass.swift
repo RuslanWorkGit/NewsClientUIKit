@@ -2,7 +2,7 @@
 //  CDNews+CoreDataClass.swift
 //  NewsClientUIKit
 //
-//  Created by Ruslan Liulka on 12.03.2025.
+//  Created by Ruslan Liulka on 18.03.2025.
 //
 //
 

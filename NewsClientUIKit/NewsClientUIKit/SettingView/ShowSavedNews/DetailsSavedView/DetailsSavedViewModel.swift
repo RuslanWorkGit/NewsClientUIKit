@@ -38,7 +38,7 @@ class DetailsSavedViewModel {
 //    }
     
     func deleteNews(with title: String) {
-        let context = coreDataService.context
+        let context = coreDataService.backgroundContext
         
         let fetchRequest: NSFetchRequest<CDNews> = CDNews.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "title == %@", title)

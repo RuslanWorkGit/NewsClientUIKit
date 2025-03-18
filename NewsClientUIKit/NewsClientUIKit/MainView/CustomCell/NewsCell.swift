@@ -50,10 +50,21 @@ class NewsCell: UITableViewCell {
         backgroundColor = .clear
     }
     
+    func set(news: SavedArticles) {
+//        newsImageView.sd_setImage(with: URL(string: news.urlToImage ?? ""), placeholderImage: UIImage(named: "basicNews.jpg"))
+        if let image = news.urlToImage {
+            newsImageView.image = UIImage(data: image)
+        } else {
+            newsImageView.image = UIImage(named: "basicNews.jpg")
+        }
+        
+        newsTitleLabel.text = news.title
+        
+    }
+    
     func set(news: Articles) {
         newsImageView.sd_setImage(with: URL(string: news.urlToImage ?? ""), placeholderImage: UIImage(named: "basicNews.jpg"))
         newsTitleLabel.text = news.title
-        
         
     }
     

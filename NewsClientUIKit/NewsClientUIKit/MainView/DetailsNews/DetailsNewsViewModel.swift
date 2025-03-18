@@ -13,8 +13,8 @@ class DetailsNewsViewModel {
     
     let coreDataService = CoreDataService.shared
     
-    func saveNews(with information: Articles) {
-        let context = coreDataService.context
+    func saveNews(with information: SavedArticles) {
+        let context = coreDataService.backgroundContext
         
         let savedNews = CDNews(context: context)
         savedNews.title = information.title
@@ -23,22 +23,25 @@ class DetailsNewsViewModel {
         savedNews.content = information.content
         savedNews.publishTime = information.publishedAt
         savedNews.author = information.author
+        savedNews.image = information.urlToImage
         
-        if let imageUrlString = information.urlToImage , let imageUrl = URL(string: imageUrlString) {
-            
-            SDWebImageManager.shared.loadImage(with: imageUrl, options: .highPriority, progress: nil) { image, _, _, _, _, _ in
-                if let imageData = image?.pngData() {
-                    savedNews.image = imageData
-                }
-                self.coreDataService.save(context: context)
-            }
-        } else {
-            self.coreDataService.save(context: context)
-        }
+        self.coreDataService.save(context: context)
+        
+//        if let imageUrlString = information.urlToImage , let imageUrl = URL(string: imageUrlString) {
+//            
+//            SDWebImageManager.shared.loadImage(with: imageUrl, options: .highPriority, progress: nil) { image, _, _, _, _, _ in
+//                if let imageData = image?.pngData() {
+//                    savedNews.image = imageData
+//                }
+//                self.coreDataService.save(context: context)
+//            }
+//        } else {
+//            self.coreDataService.save(context: context)
+//        }
     }
     
     func deleteNews(with title: String) {
-        let context = coreDataService.context
+        let context = coreDataService.backgroundContext
         
         let fetchRequest: NSFetchRequest<CDNews> = CDNews.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "title == %@", title)

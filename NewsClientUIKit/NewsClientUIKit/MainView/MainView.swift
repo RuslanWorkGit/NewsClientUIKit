@@ -27,12 +27,20 @@ class MainView: UIViewController {
     private var selectedCategory: Category = .general
     private let viewModel = MainViewModel()
     var request: NewsRequest?
+    var savedArticles: [SavedArticles] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         title = "Home"
-        viewModel.fethcData(category: selectedCategory)
+    
+        
+        viewModel.fethcData(category: selectedCategory) { savedNews in
+            self.savedArticles = savedNews
+            
+            self.tableView.reloadData()
+        }
+        
         setupBinding()
         configureColectionView()
         configureTableView()
@@ -89,15 +97,16 @@ extension MainView: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return request?.articles.count ?? 0
+//        return request?.articles.count ?? 0
+        return savedArticles.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        guard let newRequest = request else { return UITableViewCell() }
+        //guard let newRequest = request else { return UITableViewCell() }
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "NewsCell") as! NewsCell
-        cell.set(news: newRequest.articles[indexPath.row])
+        cell.set(news: savedArticles[indexPath.row])
         return cell
     }
     
@@ -111,10 +120,10 @@ extension MainView: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        guard let mainRequest = request else { return }
+//        guard let mainRequest = request else { return }
         
         let detailVC = DetailsNewsView()
-        detailVC.articles = mainRequest.articles[indexPath.row]
+        detailVC.savedArticles = savedArticles[indexPath.row]
         navigationController?.pushViewController(detailVC, animated: false)
     }
 }
@@ -122,12 +131,29 @@ extension MainView: UITableViewDelegate {
 //MARK: - UICollectionViewDelegate
 extension MainView: UICollectionViewDelegate {
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        selectedCategory = Category.allCases[indexPath.item]
-        collectionView.reloadData()
-        viewModel.fethcData(category: selectedCategory)
-        tableView.reloadData()
-    }
+//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        selectedCategory = Category.allCases[indexPath.item]
+//        collectionView.reloadData()
+////        viewModel.fethcData(category: selectedCategory)
+//        
+//        DispatchQueue.main.async {
+//            self.savedArticles = self.viewModel.fetсhSavedData().map {$0.toArticle()}
+//            self.tableView.reloadData()
+//        }
+//        
+//        DispatchQueue.global(qos: .userInitiated).async {
+//            self.viewModel.fethcData(category: self.selectedCategory) { savedNews in
+//                DispatchQueue.main.async {
+//                    self.savedArticles = savedNews
+//                    self.tableView.reloadData()
+//                }
+//            }
+//        }
+//        viewModel.fethcData(category: selectedCategory) { savedNews in
+//            self.savedArticles = savedNews
+//        }
+//        tableView.reloadData()
+//    }
     
     
 }
@@ -140,14 +166,36 @@ extension MainView: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CategoryCell", for: indexPath) as! CategoryCell
+        
         let category = Category.allCases[indexPath.item]
+        
         cell.configure(with: category.rawValue, isSelected: category == selectedCategory)
+        
+        cell.didTapHandler = { [weak self, category] in
+            guard let self = self else { return }
+            
+            self.selectedCategory = category
+            
+            //viewModel.fethcData(category: <#T##Category#>, savedComletion: <#T##(([SavedArticles]) -> Void)##(([SavedArticles]) -> Void)##([SavedArticles]) -> Void#>)
+            
+            loadNews()
+            }
         return cell
+    }
+    
+    func loadNews() {
+        viewModel.fethcData(category: selectedCategory) { savedNews in
+            self.savedArticles = savedNews
+            self.colectionView.reloadData()
+            self.tableView.reloadData()
+        }
+
     }
 
     
 }
 
+//MARK: - UICollectionViewDelegateFlowLayout
 extension MainView: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -155,6 +203,20 @@ extension MainView: UICollectionViewDelegateFlowLayout {
         let font = UIFont.systemFont(ofSize: 17)
         let width = category.size(withAttributes: [.font: font]).width + 20
         return CGSize(width: width, height: 40)
+    }
+}
+
+
+extension CDNews {
+    func toArticle() -> SavedArticles {
+        return SavedArticles(source: Source(id: nil, name: self.name ?? "Unknown"),
+                        author: self.author ?? "",
+                        title: self.title ?? "",
+                        description: self.descriptionLable ?? "",
+                        url: "",
+                        urlToImage: self.image,
+                        publishedAt: self.publishTime ?? "",
+                        content: self.content ?? "")
     }
 }
 

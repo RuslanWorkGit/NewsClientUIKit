@@ -16,7 +16,7 @@ class SettingViewModel {
     
     
     func funcLoadData() -> [SavedNews] {
-        let context = coreDataService.context
+        let context = coreDataService.backgroundContext
         
         let fetchRequest: NSFetchRequest<CDNews> = CDNews.fetchRequest()
         
