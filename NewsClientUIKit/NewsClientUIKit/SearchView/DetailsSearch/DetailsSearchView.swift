@@ -10,7 +10,7 @@ import SnapKit
 
 class DetailsSearchView: UIViewController {
     
-    let tableView = UITableView()
+    let newsTableView = NewsTableView<Articles>()
     var searchCategory: String?
     var request: SearchRequest?
     
@@ -22,64 +22,34 @@ class DetailsSearchView: UIViewController {
         title = titleLabel
         
         configureTableView()
-        tableView.reloadData()
     }
     
     func configureTableView() {
-        view.addSubview(tableView)
-        tableView.delegate = self
-        tableView.dataSource = self
+        view.addSubview(newsTableView)
         
-        //register cell
-        tableView.register(NewsCell.self, forCellReuseIdentifier: "NewsCell")
+        if let articles = request?.articles {
+            newsTableView.articles = articles
+        }
         
-        tableView.snp.makeConstraints { make in
+        newsTableView.cellConfigurator = { cell, article in
+            if let newsCell = cell as? NewsCell {
+                newsCell.set(news: article)
+            }
+        }
+        
+        newsTableView.didSelectedArticles = { [weak self] article in
+            guard let self = self else { return }
+            
+            let detailsVC = DetailsNewsView()
+            detailsVC.articles = article
+            self.navigationController?.pushViewController(detailsVC, animated: false)
+        }
+        
+        newsTableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
         
     }
     
-    
 }
 
-//MARK: - UITableViewDelegate
-extension DetailsSearchView: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        100
-    }
-    
-    
-}
-
-//MARK: - UITableViewDataSource
-extension DetailsSearchView: UITableViewDataSource {
-    
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print(request?.totalResults)
-        return request?.totalResults ?? 0
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        guard let unwrapedRequest = request else { return UITableViewCell() }
-        
-        let cell = tableView.dequeueReusableCell(withIdentifier: "NewsCell") as! NewsCell
-        print(indexPath.row)
-        cell.set(news: unwrapedRequest.articles[indexPath.row])
-       
-        
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        guard let mainRequest = request else { return }
-        
-        let detailsVC = DetailsNewsView()
-        detailsVC.articles = mainRequest.articles[indexPath.row]
-        navigationController?.pushViewController(detailsVC, animated: true)
-    }
-    
-    
-}

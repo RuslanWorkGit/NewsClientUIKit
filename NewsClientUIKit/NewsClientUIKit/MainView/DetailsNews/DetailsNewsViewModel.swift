@@ -27,17 +27,6 @@ class DetailsNewsViewModel {
         
         self.coreDataService.save(context: context)
         
-//        if let imageUrlString = information.urlToImage , let imageUrl = URL(string: imageUrlString) {
-//            
-//            SDWebImageManager.shared.loadImage(with: imageUrl, options: .highPriority, progress: nil) { image, _, _, _, _, _ in
-//                if let imageData = image?.pngData() {
-//                    savedNews.image = imageData
-//                }
-//                self.coreDataService.save(context: context)
-//            }
-//        } else {
-//            self.coreDataService.save(context: context)
-//        }
     }
     
     func deleteNews(with title: String) {
