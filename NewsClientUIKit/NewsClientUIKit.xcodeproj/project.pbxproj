@@ -6,6 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		9B48ACCC2D7B07630069E957 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 9B48ACCB2D7B07630069E957 /* SnapKit */; };
+		9B83C2722D8076F300A44A4E /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 9B83C2712D8076F300A44A4E /* SDWebImage */; };
+		9B83C2742D8076F300A44A4E /* SDWebImageMapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 9B83C2732D8076F300A44A4E /* SDWebImageMapKit */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		9B42CA712D79B4C900027EB9 /* NewsClientUIKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NewsClientUIKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -36,6 +42,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9B83C2722D8076F300A44A4E /* SDWebImage in Frameworks */,
+				9B83C2742D8076F300A44A4E /* SDWebImageMapKit in Frameworks */,
+				9B48ACCC2D7B07630069E957 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +87,9 @@
 			);
 			name = NewsClientUIKit;
 			packageProductDependencies = (
+				9B48ACCB2D7B07630069E957 /* SnapKit */,
+				9B83C2712D8076F300A44A4E /* SDWebImage */,
+				9B83C2732D8076F300A44A4E /* SDWebImageMapKit */,
 			);
 			productName = NewsClientUIKit;
 			productReference = 9B42CA712D79B4C900027EB9 /* NewsClientUIKit.app */;
@@ -95,6 +107,7 @@
 				TargetAttributes = {
 					9B42CA702D79B4C900027EB9 = {
 						CreatedOnToolsVersion = 16.2;
+						LastSwiftMigration = 1620;
 					};
 				};
 			};
@@ -107,6 +120,10 @@
 			);
 			mainGroup = 9B42CA682D79B4C900027EB9;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				9B740D9F2D7B06B600B985ED /* XCRemoteSwiftPackageReference "SnapKit" */,
+				9B86FACD2D80769B00EA9884 /* XCRemoteSwiftPackageReference "SDWebImage" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 9B42CA722D79B4C900027EB9 /* Products */;
 			projectDirPath = "";
@@ -143,6 +160,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 255G24QWZ2;
@@ -161,6 +179,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = ukrlan.NewsClientUIKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -171,6 +190,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 255G24QWZ2;
@@ -335,6 +355,43 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		9B740D9F2D7B06B600B985ED /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.1;
+			};
+		};
+		9B86FACD2D80769B00EA9884 /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImage.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.21.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		9B48ACCB2D7B07630069E957 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9B740D9F2D7B06B600B985ED /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		9B83C2712D8076F300A44A4E /* SDWebImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9B86FACD2D80769B00EA9884 /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			productName = SDWebImage;
+		};
+		9B83C2732D8076F300A44A4E /* SDWebImageMapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9B86FACD2D80769B00EA9884 /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			productName = SDWebImageMapKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 9B42CA692D79B4C900027EB9 /* Project object */;
 }
