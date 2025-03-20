@@ -18,8 +18,7 @@ class DetailsSavedView: UIViewController {
     let publishedAtLabel = UILabel()
     let content = UILabel()
     
-    let coreDataService = CoreDataService.shared
-    var savedNews: SavedNews?
+    var savedNews: SavedArticles?
     private let viewModel = DetailsSavedViewModel()
     private var isSaved = false
     private var saveButton: UIBarButtonItem?
@@ -90,12 +89,14 @@ class DetailsSavedView: UIViewController {
         
         guard let news = savedNews else { return }
         
-        sourceNameLabel.text = news.name
+        sourceNameLabel.text = news.source.name
         authorLabel.text = "Author: \(news.author)"
         titleLabel.text = news.title
         descriptionLabel.text = news.description
         content.text = news.content
-        image.image = news.image
+        
+        guard let imageData = news.urlToImage else { return }
+        image.image = UIImage(data: imageData)
     }
     
     func configureNavBar() {

@@ -11,7 +11,7 @@ import SnapKit
 class SettingView: UIViewController {
     
     let showSavedButton = UIButton()
-    private var savedNews: [SavedNews] = []
+    private var savedNews: [SavedArticles] = []
     private let viewModel = SettingViewModel()
     
     override func viewDidLoad() {

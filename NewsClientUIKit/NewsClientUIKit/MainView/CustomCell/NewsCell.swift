@@ -51,7 +51,7 @@ class NewsCell: UITableViewCell {
     }
     
     func set(news: SavedArticles) {
-//        newsImageView.sd_setImage(with: URL(string: news.urlToImage ?? ""), placeholderImage: UIImage(named: "basicNews.jpg"))
+
         if let image = news.urlToImage {
             newsImageView.image = UIImage(data: image)
         } else {

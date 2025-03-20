@@ -9,9 +9,9 @@ import SnapKit
 
 class ShowSavedNewsView: UIViewController {
     
-    let tableView = UITableView()
-    var savedNews: [SavedNews] = []
+    var savedNews: [SavedArticles] = []
     
+    let savedTableView = NewsTableView<SavedArticles>()
     private var viewModel = ShowSavedNewsViewModel()
     private var isDeleted = false
     private var deleteAllButton: UIBarButtonItem?
@@ -24,14 +24,26 @@ class ShowSavedNewsView: UIViewController {
     }
     
     func configureTableView() {
-        view.addSubview(tableView)
+        view.addSubview(savedTableView)
         
-        tableView.delegate = self
-        tableView.dataSource = self
+        savedTableView.articles = savedNews
         
-        tableView.register(SavedNewsCell.self, forCellReuseIdentifier: "SavedNewsCell")
+        savedTableView.cellConfigurator = { cell, articel in
+            if let newsCell = cell as? NewsCell {
+                newsCell.set(news: articel)
+            }
+        }
         
-        tableView.snp.makeConstraints { make in
+        savedTableView.didSelectedArticles = { [weak self] selecteedArticle in
+            
+            guard let self = self else { return }
+            
+            let detailsVC = DetailsSavedView()
+            detailsVC.savedNews = selecteedArticle
+            navigationController?.pushViewController(detailsVC, animated: false)
+        }
+        
+        savedTableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
     }
@@ -52,38 +64,6 @@ class ShowSavedNewsView: UIViewController {
         
         if isDeleted {
             viewModel.deleteAll()
-        } else {
-            //viewModel.deleteNews(with: news.title)
         }
     }
-}
-
-//MARK: - UITableViewDelegate
-extension ShowSavedNewsView: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        100
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let detailsVC = DetailsSavedView()
-        detailsVC.savedNews = savedNews[indexPath.row]
-        navigationController?.pushViewController(detailsVC, animated: true)
-    }
-    
-    
-}
-
-//MARK: - UITableViewDataSource
-extension ShowSavedNewsView: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        savedNews.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "SavedNewsCell") as! SavedNewsCell
-        cell.set(news: savedNews[indexPath.row])
-        return cell
-    }
-    
-    
 }

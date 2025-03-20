@@ -11,7 +11,6 @@ import SnapKit
 
 class MainView: UIViewController {
     
-//    let tableView = UITableView()
     private let newsTableView = NewsTableView<SavedArticles>()
     private let colectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -27,7 +26,6 @@ class MainView: UIViewController {
     
     private var selectedCategory: Category = .general
     private let viewModel = MainViewModel()
-    //var request: NewsRequest?
     var savedArticles: [SavedArticles] = []
     
     override func viewDidLoad() {
@@ -38,26 +36,14 @@ class MainView: UIViewController {
         
         viewModel.fethcData(category: selectedCategory) { savedNews in
             self.savedArticles = savedNews
-            
-            //self.tableView.reloadData()
+
         }
         
-//        setupBinding()
         configureColectionView()
         configureTableView()
         
         loadNews()
     }
-    
-//    func setupBinding() {
-//        viewModel.updateNews = { [weak self] requestResult in
-//            DispatchQueue.main.async {
-////                self?.request = requestResult
-////                self?.tableView.reloadData()
-//                //self?.newsTableView.savedArticles = requestResult.articles
-//            }
-//        }
-//    }
 
     func configureColectionView() {
         view.addSubview(colectionView)
@@ -86,10 +72,10 @@ class MainView: UIViewController {
         
         newsTableView.didSelectedArticles = { [weak self] selectedArticle in
             guard let self = self else { return }
-            
-            let detailsVC = DetailsNewsView()
-            detailsVC.savedArticles = selectedArticle
-            self.navigationController?.pushViewController(detailsVC, animated: false)
+
+            let detailsVC = DetailsNews<SavedArticles>()
+            detailsVC.news = selectedArticle
+            navigationController?.pushViewController(detailsVC, animated: false)
         }
         
         newsTableView.snp.makeConstraints { make in
