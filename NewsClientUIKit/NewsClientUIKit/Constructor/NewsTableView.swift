@@ -10,11 +10,6 @@ import UIKit
 class NewsTableView<T>: UIView, UITableViewDataSource, UITableViewDelegate {
     
     let tableView = UITableView()
-//    var savedArticles: [SavedArticles] = [] {
-//        didSet {
-//            tableView.reloadData()
-//        }
-//    }
     
     var articles: [T] = [] {
         didSet {

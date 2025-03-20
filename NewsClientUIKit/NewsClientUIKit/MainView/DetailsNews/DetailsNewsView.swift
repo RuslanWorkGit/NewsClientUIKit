@@ -136,7 +136,7 @@ class DetailsNewsView: UIViewController {
         if isSaved {
             viewModel.saveNews(with: news)
         } else {
-            viewModel.deleteNews(with: news.title)
+            viewModel.deleteNews(with: news.url)
         }
     }
     

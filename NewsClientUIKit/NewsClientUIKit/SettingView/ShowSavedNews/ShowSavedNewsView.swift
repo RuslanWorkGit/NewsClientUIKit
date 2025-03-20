@@ -12,6 +12,7 @@ class ShowSavedNewsView: UIViewController {
     let tableView = UITableView()
     var savedNews: [SavedNews] = []
     
+    private var viewModel = ShowSavedNewsViewModel()
     private var isDeleted = false
     private var deleteAllButton: UIBarButtonItem?
     
@@ -19,6 +20,7 @@ class ShowSavedNewsView: UIViewController {
         super.viewDidLoad()
         
         configureTableView()
+        configureNavBar()
     }
     
     func configureTableView() {
@@ -34,29 +36,26 @@ class ShowSavedNewsView: UIViewController {
         }
     }
     
-//    func configureNavBar() {
-//        deleteAllButton = UIBarButtonItem(image: UIImage(systemName: "star"), style: .plain, target: self, action: #selector(saveNews))
-//        
-//        navigationItem.rightBarButtonItem = deleteAllButton
-//    }
-//    
-//    @objc func saveNews() {
-//        
-//        guard let news = savedNews
-//        else { return }
-//        
-//        isSaved.toggle()
-//        
-//        let newImage = isSaved ? UIImage(systemName: "star.fill") : UIImage(systemName: "star")
-//        saveButton?.image = newImage
-//        print(isSaved ? "News saved" : "News doest saved")
-//        
-//        if isSaved {
-//            //viewModel.saveNews(with: news)
-//        } else {
-//            viewModel.deleteNews(with: news.title)
-//        }
-//    }
+    func configureNavBar() {
+        deleteAllButton = UIBarButtonItem(image: UIImage(systemName: "star"), style: .plain, target: self, action: #selector(deleteNews))
+        
+        navigationItem.rightBarButtonItem = deleteAllButton
+    }
+    
+    @objc func deleteNews() {
+        
+        isDeleted.toggle()
+        
+        let newImage = isDeleted ? UIImage(systemName: "trash.fill") : UIImage(systemName: "trash")
+        deleteAllButton?.image = newImage
+        print(isDeleted ? "News saved" : "News doest saved")
+        
+        if isDeleted {
+            viewModel.deleteAll()
+        } else {
+            //viewModel.deleteNews(with: news.title)
+        }
+    }
 }
 
 //MARK: - UITableViewDelegate

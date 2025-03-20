@@ -16,9 +16,9 @@ class SettingViewModel {
     
     
     func funcLoadData() -> [SavedNews] {
-        let context = coreDataService.backgroundContext
+        let context = coreDataService.context
         
-        let fetchRequest: NSFetchRequest<CDNews> = CDNews.fetchRequest()
+        let fetchRequest: NSFetchRequest<CDSavedNews> = CDSavedNews.fetchRequest()
         
         do {
             let results = try context.fetch(fetchRequest)
@@ -27,10 +27,10 @@ class SettingViewModel {
                 
                 let oneNews = SavedNews(author: result.author ?? "Unknown author",
                                     content: result.content ?? "No content",
-                                    description: result.descriptionLable ?? "No Description",
+                                        description: result.descriptionLabel ?? "No Description",
                                         image: (result.image != nil ?  UIImage(data: result.image!) : UIImage(named: "basicNews.jpg"))!,
                                     name: result.name ?? "No Name",
-                                    publishTime: result.publishTime ?? "No published time",
+                                        publishTime: result.publishedAt ?? "No published time",
                                     title: result.title ?? "No title")
                 
                 articles.append(oneNews)

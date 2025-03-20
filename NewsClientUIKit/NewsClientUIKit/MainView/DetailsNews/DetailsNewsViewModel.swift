@@ -13,27 +13,45 @@ class DetailsNewsViewModel {
     
     let coreDataService = CoreDataService.shared
     
+    
     func saveNews(with information: SavedArticles) {
-        let context = coreDataService.backgroundContext
+        let context = coreDataService.context
         
-        let savedNews = CDNews(context: context)
+        let savedNews = CDSavedNews(context: context)
         savedNews.title = information.title
-        savedNews.descriptionLable = information.description
-        savedNews.name = information.source.name
-        savedNews.content = information.content
-        savedNews.publishTime = information.publishedAt
         savedNews.author = information.author
+        savedNews.content = information.content
+        savedNews.descriptionLabel = information.description
+        savedNews.name = information.source.name
+        savedNews.publishedAt = information.publishedAt
+        savedNews.url = information.url
         savedNews.image = information.urlToImage
         
-        self.coreDataService.save(context: context)
-        
+        coreDataService.save(context: context)
     }
     
-    func deleteNews(with title: String) {
-        let context = coreDataService.backgroundContext
+    
+//    func saveNews(with information: SavedArticles) {
+//        let context = coreDataService.backgroundContext
+//        
+//        let savedNews = CDNews(context: context)
+//        savedNews.title = information.title
+//        savedNews.descriptionLable = information.description
+//        savedNews.name = information.source.name
+//        savedNews.content = information.content
+//        savedNews.publishTime = information.publishedAt
+//        savedNews.author = information.author
+//        savedNews.image = information.urlToImage
+//        
+//        self.coreDataService.save(context: context)
+//        
+//    }
+    
+    func deleteNews(with url: String) {
+        let context = coreDataService.context
         
-        let fetchRequest: NSFetchRequest<CDNews> = CDNews.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "title == %@", title)
+        let fetchRequest: NSFetchRequest<CDSavedNews> = CDSavedNews.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "url == %@", url)
         
         do {
             let result = try context.fetch(fetchRequest)
