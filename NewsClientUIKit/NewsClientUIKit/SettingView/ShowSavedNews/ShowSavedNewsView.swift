@@ -34,13 +34,14 @@ class ShowSavedNewsView: UIViewController {
             }
         }
         
-        savedTableView.didSelectedArticles = { [weak self] selecteedArticle in
+        savedTableView.didSelectedArticles = { [weak self] selectedArticle in
             
             guard let self = self else { return }
             
-            let detailsVC = DetailsSavedView()
-            detailsVC.savedNews = selecteedArticle
+            let detailsVC = DetailsNews<SavedArticles>()
+            detailsVC.news = selectedArticle
             navigationController?.pushViewController(detailsVC, animated: false)
+            
         }
         
         savedTableView.snp.makeConstraints { make in

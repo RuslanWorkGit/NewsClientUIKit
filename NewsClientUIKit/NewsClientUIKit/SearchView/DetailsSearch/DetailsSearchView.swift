@@ -40,8 +40,8 @@ class DetailsSearchView: UIViewController {
         newsTableView.didSelectedArticles = { [weak self] article in
             guard let self = self else { return }
             
-            let detailsVC = DetailsNewsView()
-            detailsVC.articles = article
+            let detailsVC = DetailsNews<Articles>()
+            detailsVC.news = article
             self.navigationController?.pushViewController(detailsVC, animated: false)
         }
         
