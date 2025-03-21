@@ -12,6 +12,8 @@ class ShowSavedNewsViewModel {
     let coreDataService = CoreDataService.shared
     
     func deleteAll() {
-        coreDataService.deleteAll(CDNews.self)
+        let context = coreDataService.context
+        coreDataService.deleteAll(CDSavedNews.self)
+        coreDataService.save(context: context)
     }
 }

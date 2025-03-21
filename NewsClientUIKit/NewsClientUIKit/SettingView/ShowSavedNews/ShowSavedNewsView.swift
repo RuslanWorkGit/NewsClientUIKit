@@ -57,5 +57,7 @@ class ShowSavedNewsView: UIViewController {
     
     @objc func deleteNews() {
         viewModel.deleteAll()
+        savedTableView.articles = []
+        savedTableView.tableView.reloadData()
     }
 }
