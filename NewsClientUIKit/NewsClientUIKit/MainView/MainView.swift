@@ -27,6 +27,7 @@ class MainView: UIViewController {
     private var selectedCategory: Category = .general
     private let viewModel = MainViewModel()
     var savedArticles: [SavedArticles] = []
+    private var updateButton: UIBarButtonItem?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,8 +40,8 @@ class MainView: UIViewController {
         
         configureColectionView()
         configureTableView()
-        
         loadNews()
+        configureNavBar()
     }
 
     func configureColectionView() {
@@ -88,6 +89,18 @@ class MainView: UIViewController {
             self.newsTableView.articles = savedNews
         }
 
+    }
+    
+    func configureNavBar() {
+        let updateButtonImage = UIImage(systemName: "arrow.trianglehead.2.clockwise.rotate.90")
+        let tintedImage = updateButtonImage?.withTintColor(.black, renderingMode: .alwaysOriginal)
+        
+        updateButton = UIBarButtonItem(image: tintedImage, style: .plain, target: self, action: #selector(updateNews))
+        navigationItem.rightBarButtonItem = updateButton
+    }
+    
+    @objc func updateNews() {
+        loadNews()
     }
     
 }
