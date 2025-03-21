@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreData
 
 class ShowSavedNewsViewModel {
     
@@ -15,5 +16,23 @@ class ShowSavedNewsViewModel {
         let context = coreDataService.context
         coreDataService.deleteAll(CDSavedNews.self)
         coreDataService.save(context: context)
+    }
+    
+    func delete(with url: String) {
+        let context = coreDataService.context
+        
+        let fetchRequest: NSFetchRequest<CDSavedNews> = CDSavedNews.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "url == %@", url)
+        
+        do {
+            let result = try context.fetch(fetchRequest)
+            if let newsToDelete = result.first {
+                context.delete(newsToDelete)
+                try context.save()
+                print("One News Delete")
+            }
+        } catch {
+            print("error delete news: \(error.localizedDescription)")
+        }
     }
 }

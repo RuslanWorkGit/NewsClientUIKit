@@ -44,6 +44,16 @@ class ShowSavedNewsView: UIViewController {
             
         }
         
+        savedTableView.deletionHandler = { [weak self] index in
+            
+            guard let self = self else { return }
+            
+            let articleToDelete = self.savedNews[index]
+            self.savedNews.remove(at: index)
+            self.savedTableView.articles = self.savedNews
+            self.viewModel.delete(with: articleToDelete.newsUrl)
+        }
+        
         savedTableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }

@@ -23,6 +23,8 @@ class NewsTableView<T>: UIView, UITableViewDataSource, UITableViewDelegate {
 //    var didSelectedArticles: ((SavedArticles) -> Void)?
     var didSelectedArticles: ((T) -> Void)?
     
+    var deletionHandler: ((Int) -> Void)?
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupTableView()
@@ -56,6 +58,24 @@ class NewsTableView<T>: UIView, UITableViewDataSource, UITableViewDelegate {
         cellConfigurator?(cell, item)
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        guard let deletionHandler = deletionHandler else { return nil}
+        
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { action, view, completionHandler in
+            
+            deletionHandler(indexPath.row)
+            
+            //tableView.deleteRows(at: [indexPath], with: .automatic)
+            
+            completionHandler(true)
+        }
+        
+        let configuration = UISwipeActionsConfiguration(actions: [deleteAction])
+        return configuration
+    }
+    
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100
