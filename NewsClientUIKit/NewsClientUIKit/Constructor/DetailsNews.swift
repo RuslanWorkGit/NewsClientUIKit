@@ -17,6 +17,7 @@ class DetailsNews<T: NewsRepresentable>: UIViewController {
     let descriptionLabel = UILabel()
     let publishedAtLabel = UILabel()
     let contentLabel = UILabel()
+    let readMoreButton = UIButton()
     
     var news: T?
     
@@ -31,6 +32,7 @@ class DetailsNews<T: NewsRepresentable>: UIViewController {
         setupUI()
         updateUI()
         configureNavBar()
+        configureReadButton()
     }
     
     
@@ -42,11 +44,13 @@ class DetailsNews<T: NewsRepresentable>: UIViewController {
         view.addSubview(descriptionLabel)
         view.addSubview(publishedAtLabel)
         view.addSubview(contentLabel)
+        view.addSubview(readMoreButton)
         
         titleLabel.numberOfLines = 0
         titleLabel.font = UIFont.systemFont(ofSize: 20, weight: .bold)
         descriptionLabel.numberOfLines = 0
         contentLabel.numberOfLines = 0
+        
         
         titleLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).offset(16)
@@ -81,6 +85,12 @@ class DetailsNews<T: NewsRepresentable>: UIViewController {
             make.top.equalTo(descriptionLabel.snp.bottom).offset(16)
             make.leading.trailing.equalToSuperview().inset(8)
         }
+        
+        readMoreButton.snp.makeConstraints { make in
+            make.top.equalTo(contentLabel.snp.bottom).offset(16)
+            make.leading.trailing.equalToSuperview().inset(8)
+            make.height.equalTo(50)
+        }
     }
     
     func updateUI() {
@@ -99,6 +109,13 @@ class DetailsNews<T: NewsRepresentable>: UIViewController {
         }
         
         image.image = UIImage(data: imageData)
+        
+        readMoreButton.setTitle("Read More", for: .normal)
+        readMoreButton.setTitleColor(.black, for: .normal)
+        readMoreButton.layer.cornerRadius = 10
+        readMoreButton.layer.borderWidth = 1
+        readMoreButton.layer.borderColor = UIColor.black.cgColor
+        
         
     }
     
@@ -119,6 +136,10 @@ class DetailsNews<T: NewsRepresentable>: UIViewController {
         navigationItem.rightBarButtonItem = saveButton
     }
     
+    func configureReadButton() {
+        readMoreButton.addTarget(self, action: #selector(readMoreSafari), for: .touchUpInside)
+    }
+    
     @objc func saveNews() {
         
         guard let news = news else { return }
@@ -133,6 +154,17 @@ class DetailsNews<T: NewsRepresentable>: UIViewController {
         isSaved = false
         configureNavBar()
 
+    }
+    
+    @objc func readMoreSafari() {
+        guard let stringUrl = news?.newsUrl else { return }
+        
+        if let url = URL(string: stringUrl) {
+            UIApplication.shared.open(url)
+        } else {
+            print("Wrong link!!")
+        }
+        
     }
     
 }
