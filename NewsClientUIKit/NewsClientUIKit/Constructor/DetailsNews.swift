@@ -103,25 +103,36 @@ class DetailsNews<T: NewsRepresentable>: UIViewController {
     }
     
     func configureNavBar() {
-        saveButton = UIBarButtonItem(image: UIImage(systemName: "star")?.withTintColor(.systemYellow), style: .plain, target: self, action: #selector(saveNews))
+        guard let news = news else { return }
+        
+        print(news.newsUrl)
+        
+        guard let isNewsExists = viewModel.isElementExists(with: news.newsUrl) else { return }
+        isSaved = isNewsExists
+        
+        if isSaved {
+            saveButton = UIBarButtonItem(image: UIImage(systemName: "star.fill"), style: .plain, target: self, action: #selector(deleteNews))
+        } else {
+            saveButton = UIBarButtonItem(image: UIImage(systemName: "star"), style: .plain, target: self, action: #selector(saveNews))
+        }
+
+        navigationItem.rightBarButtonItem = saveButton
     }
     
     @objc func saveNews() {
         
         guard let news = news else { return }
+        viewModel.save(with: news)
+        configureNavBar()
+    }
+    
+    @objc func deleteNews() {
+        guard let news = news else { return }
         
-        isSaved.toggle()
-        
-        let newImage = isSaved ? UIImage(systemName: "star") : UIImage(systemName: "star.fill")
-        newImage?.withTintColor(.systemYellow)
-        print(isSaved ? "News saved" : "News doest saved")
-        
-        if isSaved {
-            viewModel.save(with: news)
-        } else {
-            viewModel.delete(with: news.newsUrl)
-        }
-        
+        viewModel.delete(with: news.newsUrl)
+        isSaved = false
+        configureNavBar()
+
     }
     
 }

@@ -50,21 +50,12 @@ class ShowSavedNewsView: UIViewController {
     }
     
     func configureNavBar() {
-        deleteAllButton = UIBarButtonItem(image: UIImage(systemName: "star"), style: .plain, target: self, action: #selector(deleteNews))
+        deleteAllButton = UIBarButtonItem(image: UIImage(systemName: "trash"), style: .plain, target: self, action: #selector(deleteNews))
         
         navigationItem.rightBarButtonItem = deleteAllButton
     }
     
     @objc func deleteNews() {
-        
-        isDeleted.toggle()
-        
-        let newImage = isDeleted ? UIImage(systemName: "trash.fill") : UIImage(systemName: "trash")
-        deleteAllButton?.image = newImage
-        print(isDeleted ? "News saved" : "News doest saved")
-        
-        if isDeleted {
-            viewModel.deleteAll()
-        }
+        viewModel.deleteAll()
     }
 }

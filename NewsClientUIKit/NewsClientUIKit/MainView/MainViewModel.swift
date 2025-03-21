@@ -58,17 +58,6 @@ class MainViewModel {
         
         let context = coreData.context
         
-//        //Видалення старих даних 
-//        let fetchReques: NSFetchRequest<NSFetchRequestResult> = CDNews.fetchRequest()
-//        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchReques)
-//        
-//        do {
-//            try context.execute(deleteRequest)
-//            try context.save()
-//        } catch {
-//            print("Failed to clean old data: \(error)")
-//        }
-        
         for article in articles {
         
             var newSavedNews: CDNews?

@@ -29,6 +29,27 @@ class NewDetailsNewsViewModel {
         
     }
     
+    func isElementExists(with url: String) -> Bool? {
+        
+        let context = coreData.context
+        
+        let fetchRequest: NSFetchRequest<CDSavedNews> = CDSavedNews.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: " url == %@", url)
+        
+        do {
+            let result = try context.fetch(fetchRequest)
+            
+            if result.first != nil {
+                return true
+            } else {
+                return false
+            }
+        } catch {
+            print("Error: \(error.localizedDescription)")
+            return nil
+        }
+    }
+    
     func delete(with url: String) {
         
         let context = coreData.context

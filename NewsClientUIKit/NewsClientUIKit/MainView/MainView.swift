@@ -33,10 +33,8 @@ class MainView: UIViewController {
         
         title = "Home"
     
-        
         viewModel.fethcData(category: selectedCategory) { savedNews in
             self.savedArticles = savedNews
-
         }
         
         configureColectionView()
@@ -146,7 +144,7 @@ extension CDNews {
                         author: self.author ?? "",
                         title: self.title ?? "",
                         description: self.descriptionLable ?? "",
-                        url: "",
+                        url: self.url ?? "",
                         urlToImage: self.image,
                         publishedAt: self.publishTime ?? "",
                         content: self.content ?? "")
