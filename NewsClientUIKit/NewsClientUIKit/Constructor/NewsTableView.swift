@@ -67,8 +67,6 @@ class NewsTableView<T>: UIView, UITableViewDataSource, UITableViewDelegate {
             
             deletionHandler(indexPath.row)
             
-            //tableView.deleteRows(at: [indexPath], with: .automatic)
-            
             completionHandler(true)
         }
         

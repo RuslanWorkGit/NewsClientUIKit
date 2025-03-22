@@ -24,6 +24,7 @@ class NewsCell: UITableViewCell {
     
     var newsImageView = UIImageView()
     var newsTitleLabel = UILabel()
+    var newsPublishedAtLabel = UILabel()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -31,15 +32,18 @@ class NewsCell: UITableViewCell {
         contentView.addSubview(containerView)
         containerView.addSubview(newsImageView)
         containerView.addSubview(newsTitleLabel)
+        containerView.addSubview(newsPublishedAtLabel)
 //        addSubview(newsImageView)
 //        addSubview(newsTitleLabel)
         
         setupUI()
         configureImageView()
         configureTitleLabel()
+        configurePublisheAtLabel()
         setContainerConstraint()
         setImageConstraint()
         setTitleConstraint()
+        setPublishedAtConstraint()
     }
     
     required init?(coder: NSCoder) {
@@ -59,15 +63,18 @@ class NewsCell: UITableViewCell {
         }
         
         newsTitleLabel.text = news.title
+        newsPublishedAtLabel.text = formateData(from: news.publishedAt)
         
     }
     
     func set(news: Articles) {
         newsImageView.sd_setImage(with: URL(string: news.urlToImage ?? ""), placeholderImage: UIImage(named: "basicNews.jpg"))
         newsTitleLabel.text = news.title
+        newsPublishedAtLabel.text = formateData(from: news.publishedAt)
         
     }
     
+
     func configureImageView() {
         newsImageView.layer.cornerRadius = 10
         newsImageView.clipsToBounds = true
@@ -76,8 +83,15 @@ class NewsCell: UITableViewCell {
     }
     
     func configureTitleLabel() {
-        newsTitleLabel.numberOfLines = 0
-        newsTitleLabel.adjustsFontSizeToFitWidth = true
+        newsTitleLabel.numberOfLines = 3
+        newsTitleLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        newsTitleLabel.adjustsFontSizeToFitWidth = false
+        newsTitleLabel.lineBreakMode = .byTruncatingTail
+    }
+    
+    func configurePublisheAtLabel() {
+        newsPublishedAtLabel.textAlignment = .right
+        newsPublishedAtLabel.textColor = .systemGray
     }
     
     private func setContainerConstraint() {
@@ -102,11 +116,28 @@ class NewsCell: UITableViewCell {
     func setTitleConstraint() {
         newsTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         newsTitleLabel.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.leading.equalTo(newsImageView.snp.trailing).offset(20)
-            make.height.equalTo(80)
+            make.top.equalToSuperview().offset(8)
+            make.leading.equalTo(newsImageView.snp.trailing).offset(16)
+            //make.height.equalTo(80)
             make.trailing.equalToSuperview().offset(-12)
         }
+    }
+    
+    func setPublishedAtConstraint() {
+        newsPublishedAtLabel.snp.makeConstraints { make in
+            make.bottom.equalToSuperview().offset(-8)
+            make.leading.equalTo(newsImageView.snp.trailing).offset(8)
+            make.trailing.equalToSuperview().offset(-8)
+        }
+    }
+    
+    private func formateData(from dataString: String) -> String {
+        let isoFormatter = ISO8601DateFormatter()
+        guard let data = isoFormatter.date(from: dataString) else { return dataString }
+        
+        let displayFormatter = DateFormatter()
+        displayFormatter.dateFormat = "yyyy.MM.dd HH:mm"
+        return displayFormatter.string(from: data)
     }
     
 }

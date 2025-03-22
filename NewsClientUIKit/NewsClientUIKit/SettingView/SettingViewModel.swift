@@ -13,8 +13,6 @@ class SettingViewModel {
     
     let coreDataService = CoreDataService.shared
     
-    
-    
     func funcLoadData() -> [SavedArticles] {
         let context = coreDataService.context
         
@@ -46,5 +44,30 @@ class SettingViewModel {
         }
         
         
+    }
+    
+    func cleanCache() {
+        let context = coreDataService.context
+        
+        let fetchRequest: NSFetchRequest<CDNews> = CDNews.fetchRequest()
+        do {
+            let results = try context.fetch(fetchRequest)
+            print("Core Data: \(results.count)")
+        } catch {
+            print("error: \(error)")
+        }
+        
+        coreDataService.deleteAll(CDNews.self)
+        coreDataService.save(context: context)
+        
+        print("Cache cleaned")
+        
+        
+        do {
+            let results = try context.fetch(fetchRequest)
+            print("Core Data: \(results.count)")
+        } catch {
+            print("error: \(error)")
+        }
     }
 }

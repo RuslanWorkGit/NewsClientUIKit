@@ -122,8 +122,6 @@ class DetailsNews<T: NewsRepresentable>: UIViewController {
     func configureNavBar() {
         guard let news = news else { return }
         
-        print(news.newsUrl)
-        
         guard let isNewsExists = viewModel.isElementExists(with: news.newsUrl) else { return }
         isSaved = isNewsExists
         
