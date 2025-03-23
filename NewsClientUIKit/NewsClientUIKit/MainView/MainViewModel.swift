@@ -30,30 +30,6 @@ class MainViewModel {
         self.networkService = networkService
     }
     
-//    func fethcData(category: Category, savedComletion: @escaping (([SavedArticles]) -> Void)) {
-//        
-//        guard let url = apiLink.buildUrl(endpoints: .topHeadLines ,category: category) else {
-//            print("wrong link")
-//            return
-//        }
-//        
-//        networkService.fetch(with: url) { (result: Result<NewsRequest, Error>) in
-//            
-//            switch result {
-//            case .success(let newRequest):
-//                //self.newsRequest = newRequest
-//                self.savetoCoreData(articles: newRequest.articles, category: category.rawValue)
-//                
-//                DispatchQueue.main.async {
-//                    let savedNews = self.fetсhSavedData(category: category.rawValue)
-//                    savedComletion(savedNews.map {$0.toArticle()})
-//                }
-//            case .failure(let error):
-//                print("Error: \(error)")
-//            }
-//        }
-//    }
-    
     func fethcData(category: Category, savedComletion: @escaping (([SavedArticles]) -> Void)) {
         
         dataIsLoad = true
