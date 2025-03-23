@@ -19,6 +19,9 @@ class DetailsNews<T: NewsRepresentable>: UIViewController {
     let contentLabel = UILabel()
     let readMoreButton = UIButton()
     
+    let scrollView = UIScrollView()
+    let contentView = UIView()
+    
     var news: T?
     
     private let viewModel = NewDetailsNewsViewModel()
@@ -37,59 +40,74 @@ class DetailsNews<T: NewsRepresentable>: UIViewController {
     
     
     func setupUI() {
-        view.addSubview(titleLabel)
-        view.addSubview(image)
-        view.addSubview(sourceNameLabel)
-        view.addSubview(authorLabel)
-        view.addSubview(descriptionLabel)
-        view.addSubview(publishedAtLabel)
-        view.addSubview(contentLabel)
-        view.addSubview(readMoreButton)
         
+        view.addSubview(scrollView)
+        scrollView.addSubview(contentView)
+        
+        contentView.addSubview(titleLabel)
+        contentView.addSubview(image)
+        contentView.addSubview(sourceNameLabel)
+        contentView.addSubview(authorLabel)
+        contentView.addSubview(descriptionLabel)
+        contentView.addSubview(publishedAtLabel)
+        contentView.addSubview(contentLabel)
+        contentView.addSubview(readMoreButton)
+        
+   
         titleLabel.numberOfLines = 0
         titleLabel.font = UIFont.systemFont(ofSize: 20, weight: .bold)
         descriptionLabel.numberOfLines = 0
         contentLabel.numberOfLines = 0
         
+        scrollView.snp.makeConstraints { make in
+            make.edges.equalTo(view.safeAreaLayoutGuide)
+        }
+        
+        contentView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+            make.width.equalToSuperview()
+        }
+        
         
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(16)
-            make.trailing.leading.equalToSuperview().inset(16)
+            make.top.equalTo(contentView).offset(16)
+            make.trailing.leading.equalTo(contentView).inset(16)
             
         }
         
         image.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(16)
-            make.trailing.leading.equalToSuperview()
+            make.trailing.leading.equalTo(contentView)
             make.height.equalTo(250)
         }
         
         sourceNameLabel.snp.makeConstraints { make in
             make.top.equalTo(image.snp.bottom).offset(16)
-            make.leading.equalToSuperview().offset(8)
+            make.leading.equalTo(contentView).offset(8)
             make.width.equalTo(view.bounds.width / 2)
         }
                 
         authorLabel.snp.makeConstraints { make in
             make.top.equalTo(image.snp.bottom).offset(16)
-            make.trailing.equalToSuperview().offset(-8)
+            make.trailing.equalTo(contentView).offset(-8)
             make.width.equalTo(view.bounds.width / 2)
         }
         
         descriptionLabel.snp.makeConstraints { make in
             make.top.equalTo(sourceNameLabel.snp.bottom).offset(16)
-            make.leading.trailing.equalToSuperview().inset(8)
+            make.leading.trailing.equalTo(contentView).inset(8)
         }
         
         contentLabel.snp.makeConstraints { make in
             make.top.equalTo(descriptionLabel.snp.bottom).offset(16)
-            make.leading.trailing.equalToSuperview().inset(8)
+            make.leading.trailing.equalTo(contentView).inset(8)
         }
         
         readMoreButton.snp.makeConstraints { make in
             make.top.equalTo(contentLabel.snp.bottom).offset(16)
-            make.leading.trailing.equalToSuperview().inset(8)
+            make.leading.trailing.equalTo(contentView).inset(8)
             make.height.equalTo(50)
+            make.bottom.equalTo(contentView).offset(-16)
         }
     }
     
