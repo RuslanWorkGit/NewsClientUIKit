@@ -17,6 +17,10 @@ class DetailsNews<T: NewsRepresentable>: UIViewController {
     let descriptionLabel = UILabel()
     let publishedAtLabel = UILabel()
     let contentLabel = UILabel()
+    let readMoreButton = UIButton()
+    
+    let scrollView = UIScrollView()
+    let contentView = UIView()
     
     var news: T?
     
@@ -31,55 +35,79 @@ class DetailsNews<T: NewsRepresentable>: UIViewController {
         setupUI()
         updateUI()
         configureNavBar()
+        configureReadButton()
     }
     
     
     func setupUI() {
-        view.addSubview(titleLabel)
-        view.addSubview(image)
-        view.addSubview(sourceNameLabel)
-        view.addSubview(authorLabel)
-        view.addSubview(descriptionLabel)
-        view.addSubview(publishedAtLabel)
-        view.addSubview(contentLabel)
         
+        view.addSubview(scrollView)
+        scrollView.addSubview(contentView)
+        
+        contentView.addSubview(titleLabel)
+        contentView.addSubview(image)
+        contentView.addSubview(sourceNameLabel)
+        contentView.addSubview(authorLabel)
+        contentView.addSubview(descriptionLabel)
+        contentView.addSubview(publishedAtLabel)
+        contentView.addSubview(contentLabel)
+        contentView.addSubview(readMoreButton)
+        
+   
         titleLabel.numberOfLines = 0
         titleLabel.font = UIFont.systemFont(ofSize: 20, weight: .bold)
         descriptionLabel.numberOfLines = 0
         contentLabel.numberOfLines = 0
         
+        scrollView.snp.makeConstraints { make in
+            make.edges.equalTo(view.safeAreaLayoutGuide)
+        }
+        
+        contentView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+            make.width.equalToSuperview()
+        }
+        
+        
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(16)
-            make.trailing.leading.equalToSuperview().inset(16)
+            make.top.equalTo(contentView).offset(16)
+            make.trailing.leading.equalTo(contentView).inset(16)
             
         }
         
         image.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(16)
-            make.trailing.leading.equalToSuperview()
+            make.trailing.leading.equalTo(contentView)
             make.height.equalTo(250)
         }
         
         sourceNameLabel.snp.makeConstraints { make in
             make.top.equalTo(image.snp.bottom).offset(16)
-            make.leading.equalToSuperview().offset(8)
+            make.leading.equalTo(contentView).offset(8)
             make.width.equalTo(view.bounds.width / 2)
         }
                 
         authorLabel.snp.makeConstraints { make in
             make.top.equalTo(image.snp.bottom).offset(16)
-            make.trailing.equalToSuperview().offset(-8)
+            make.trailing.equalTo(contentView).offset(-8)
             make.width.equalTo(view.bounds.width / 2)
         }
         
         descriptionLabel.snp.makeConstraints { make in
             make.top.equalTo(sourceNameLabel.snp.bottom).offset(16)
-            make.leading.trailing.equalToSuperview().inset(8)
+            make.leading.trailing.equalTo(contentView).inset(8)
         }
         
         contentLabel.snp.makeConstraints { make in
             make.top.equalTo(descriptionLabel.snp.bottom).offset(16)
-            make.leading.trailing.equalToSuperview().inset(8)
+            make.leading.trailing.equalTo(contentView).inset(8)
+        }
+        
+        readMoreButton.snp.makeConstraints { make in
+            make.top.equalTo(contentLabel.snp.bottom).offset(16)
+            make.leading.trailing.equalTo(contentView).inset(8)
+            make.height.equalTo(50)
+            make.bottom.equalTo(contentView).offset(-16)
         }
     }
     
@@ -100,26 +128,57 @@ class DetailsNews<T: NewsRepresentable>: UIViewController {
         
         image.image = UIImage(data: imageData)
         
+        readMoreButton.setTitle("Read More", for: .normal)
+        readMoreButton.setTitleColor(.black, for: .normal)
+        readMoreButton.layer.cornerRadius = 10
+        readMoreButton.layer.borderWidth = 1
+        readMoreButton.layer.borderColor = UIColor.black.cgColor
+        
+        
     }
     
     func configureNavBar() {
-        saveButton = UIBarButtonItem(image: UIImage(systemName: "star")?.withTintColor(.systemYellow), style: .plain, target: self, action: #selector(saveNews))
+        guard let news = news else { return }
+        
+        guard let isNewsExists = viewModel.isElementExists(with: news.newsUrl) else { return }
+        isSaved = isNewsExists
+        
+        if isSaved {
+            saveButton = UIBarButtonItem(image: UIImage(systemName: "star.fill"), style: .plain, target: self, action: #selector(deleteNews))
+        } else {
+            saveButton = UIBarButtonItem(image: UIImage(systemName: "star"), style: .plain, target: self, action: #selector(saveNews))
+        }
+
+        navigationItem.rightBarButtonItem = saveButton
+    }
+    
+    func configureReadButton() {
+        readMoreButton.addTarget(self, action: #selector(readMoreSafari), for: .touchUpInside)
     }
     
     @objc func saveNews() {
         
         guard let news = news else { return }
+        viewModel.save(with: news)
+        configureNavBar()
+    }
+    
+    @objc func deleteNews() {
+        guard let news = news else { return }
         
-        isSaved.toggle()
+        viewModel.delete(with: news.newsUrl)
+        isSaved = false
+        configureNavBar()
+
+    }
+    
+    @objc func readMoreSafari() {
+        guard let stringUrl = news?.newsUrl else { return }
         
-        let newImage = isSaved ? UIImage(systemName: "star") : UIImage(systemName: "star.fill")
-        newImage?.withTintColor(.systemYellow)
-        print(isSaved ? "News saved" : "News doest saved")
-        
-        if isSaved {
-            viewModel.save(with: news)
+        if let url = URL(string: stringUrl) {
+            UIApplication.shared.open(url)
         } else {
-            viewModel.delete(with: news.newsUrl)
+            print("Wrong link!!")
         }
         
     }
