@@ -7,7 +7,7 @@
 
 import UIKit
 import SnapKit
-
+import Lottie
 
 class MainView: UIViewController {
     
@@ -27,22 +27,72 @@ class MainView: UIViewController {
     private var selectedCategory: Category = .general
     private let viewModel = MainViewModel()
     var savedArticles: [SavedArticles] = []
+    private var updateButton: UIBarButtonItem?
+    private var animationView: LottieAnimationView?
+    
+    private var isFirstAppearance = true
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         title = "Home"
     
-        
         viewModel.fethcData(category: selectedCategory) { savedNews in
             self.savedArticles = savedNews
-
         }
         
         configureColectionView()
         configureTableView()
-        
         loadNews()
+        configureNavBar()
+        setupBinding()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if isFirstAppearance {
+                loadNews()
+                isFirstAppearance = false
+            }
+        
+    }
+    
+    func setupBinding() {
+        viewModel.loadData = { [weak self] isLoad in
+            guard let self = self else { return }
+            
+            if isLoad {
+                showAnimation()
+            } else {
+                hidenAnimation()
+            }
+        }
+    }
+    
+    func showAnimation() {
+        let animation = LottieAnimationView(name: "animationLoading")
+            
+        animation.contentMode = .scaleAspectFit
+        animation.loopMode = .loop
+        view.addSubview(animation)
+        animation.play()
+            
+        animationView = animation
+        newsTableView.isHidden = true
+        
+        animationView?.snp.makeConstraints({ make in
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview()
+            make.height.width.equalTo(150)
+        })
+    }
+    
+    func hidenAnimation() {
+        animationView?.stop()
+            animationView?.removeFromSuperview()
+            animationView = nil
+            newsTableView.isHidden = false
     }
 
     func configureColectionView() {
@@ -92,6 +142,18 @@ class MainView: UIViewController {
 
     }
     
+    func configureNavBar() {
+        let updateButtonImage = UIImage(systemName: "arrow.trianglehead.2.clockwise.rotate.90")
+        let tintedImage = updateButtonImage?.withTintColor(.black, renderingMode: .alwaysOriginal)
+        
+        updateButton = UIBarButtonItem(image: tintedImage, style: .plain, target: self, action: #selector(updateNews))
+        navigationItem.rightBarButtonItem = updateButton
+    }
+    
+    @objc func updateNews() {
+        loadNews()
+    }
+    
 }
 
 //MARK: - UICollectionViewDelegate
@@ -124,8 +186,6 @@ extension MainView: UICollectionViewDataSource {
         return cell
     }
     
-
-    
 }
 
 //MARK: - UICollectionViewDelegateFlowLayout
@@ -139,6 +199,11 @@ extension MainView: UICollectionViewDelegateFlowLayout {
     }
 }
 
+extension MainView: SettingViewDelegate {
+    func didClearCache() {
+        loadNews()
+    }
+}
 
 extension CDNews {
     func toArticle() -> SavedArticles {
@@ -146,11 +211,13 @@ extension CDNews {
                         author: self.author ?? "",
                         title: self.title ?? "",
                         description: self.descriptionLable ?? "",
-                        url: "",
+                        url: self.url ?? "",
                         urlToImage: self.image,
                         publishedAt: self.publishTime ?? "",
                         content: self.content ?? "")
     }
 }
+
+
 
 

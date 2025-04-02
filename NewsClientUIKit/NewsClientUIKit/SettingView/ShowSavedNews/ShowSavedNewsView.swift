@@ -44,27 +44,30 @@ class ShowSavedNewsView: UIViewController {
             
         }
         
+        savedTableView.deletionHandler = { [weak self] index in
+            
+            guard let self = self else { return }
+            
+            let articleToDelete = self.savedNews[index]
+            self.savedNews.remove(at: index)
+            self.savedTableView.articles = self.savedNews
+            self.viewModel.delete(with: articleToDelete.newsUrl)
+        }
+        
         savedTableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
     }
     
     func configureNavBar() {
-        deleteAllButton = UIBarButtonItem(image: UIImage(systemName: "star"), style: .plain, target: self, action: #selector(deleteNews))
+        deleteAllButton = UIBarButtonItem(image: UIImage(systemName: "trash"), style: .plain, target: self, action: #selector(deleteNews))
         
         navigationItem.rightBarButtonItem = deleteAllButton
     }
     
     @objc func deleteNews() {
-        
-        isDeleted.toggle()
-        
-        let newImage = isDeleted ? UIImage(systemName: "trash.fill") : UIImage(systemName: "trash")
-        deleteAllButton?.image = newImage
-        print(isDeleted ? "News saved" : "News doest saved")
-        
-        if isDeleted {
-            viewModel.deleteAll()
-        }
+        viewModel.deleteAll()
+        savedTableView.articles = []
+        savedTableView.tableView.reloadData()
     }
 }
