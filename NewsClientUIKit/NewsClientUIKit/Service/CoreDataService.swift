@@ -99,8 +99,6 @@ extension CoreDataService {
         return results as? [T] ?? []
     }
     
-    //для видалення потрібно передати в рамках якого контексту це треба зробити, передати тип сутості (Юзер чи продукт),
-    
     func deleteRecords<T>(_ type: T.Type, context: NSManagedObjectContext? = nil, fetchRequest: NSFetchRequest<T>) where T: NSManagedObject {
         if let context = context {
             

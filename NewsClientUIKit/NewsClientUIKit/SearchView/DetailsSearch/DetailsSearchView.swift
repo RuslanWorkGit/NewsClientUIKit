@@ -26,7 +26,6 @@ class DetailsSearchView: UIViewController {
         title = titleLabel
         
         configureTableView()
-//        loadingInitialData()
     }
     
     func configureTableView() {

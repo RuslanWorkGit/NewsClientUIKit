@@ -218,6 +218,3 @@ extension CDNews {
     }
 }
 
-
-
-

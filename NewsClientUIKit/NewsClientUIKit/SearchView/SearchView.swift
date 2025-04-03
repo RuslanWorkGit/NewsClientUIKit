@@ -14,7 +14,6 @@ class SearchView: UIViewController {
     let searchButton = UIButton()
     let switchPopularity = UISwitch()
     
-    
     var request: SearchRequest?
     let viewModel = SearchViewModel()
     
